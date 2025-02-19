@@ -1,7 +1,7 @@
 import Header from './Header';
 import Search from './Search';
-//import ChatOutput from './ChatOutput'; // Import ChatOutput component
-import DefaultChatOutput from './DefaultChatOutput'; 
+import ChatOutput from './ChatOutput'; // Import ChatOutput component
+//import DefaultChatOutput from './DefaultChatOutput'; 
 
 const Container = () => {
   return (
@@ -31,8 +31,8 @@ const Container = () => {
 
       {/* Chat Output Wrapper */}
       <div className="h-0 flex-grow overflow-hidden">
-        {/* <ChatOutput /> Importing the new ChatOutput component */}
-        <DefaultChatOutput /> 
+        <ChatOutput />
+        {/* <DefaultChatOutput />  */}
       </div>
 
       {/* Bottom div - stays in position */}
