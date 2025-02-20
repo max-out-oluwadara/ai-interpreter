@@ -1,3 +1,5 @@
+"use client"; // ✅ Ensure this runs as a Client Component
+
 import Image from "next/image";
 import IconInterpreterLogo from "@/assets/icon-intepreter-logo.svg"; // Import the new SVG icon
 import { useState, useEffect, useRef } from "react";

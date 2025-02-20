@@ -1,3 +1,5 @@
+"use client"; // ✅ Ensure this runs as a Client Component
+
 import Container from "@/components/Container";
 
 export default function Home() {

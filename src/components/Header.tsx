@@ -1,3 +1,5 @@
+"use client"; // ✅ Ensure this runs as a Client Component
+
 import Image from 'next/image';
 import LogoInterpreter from '@/assets/icon-intepreter-logo.svg';
 import IconHistory from '@/assets/icon-history.svg';
