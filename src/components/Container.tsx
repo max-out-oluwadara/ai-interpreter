@@ -42,7 +42,7 @@ const Container = () => {
           rounded-[20px]
           sm:w-full
           max-w-full
-          mb-[40px]
+          mb-[25px]
           sm:mb-0
         "
       >
