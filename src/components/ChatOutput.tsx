@@ -1,8 +1,23 @@
+"use client"; // ✅ Required for hooks
+
+import { useEffect, useRef } from "react";
 import messages from "@/data/message"; // Import messages
 
 const ChatOutput = () => {
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  // ✅ Ensure scrolling works properly on iPhone
+  useEffect(() => {
+    if (chatContainerRef.current && chatEndRef.current) {
+      setTimeout(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100); // Small delay to ensure proper rendering
+    }
+  }, []); // ✅ Runs only once after component mounts
+
   return (
-    <div className="h-full space-y-3 p-4">
+    <div ref={chatContainerRef} className="h-full space-y-3 p-4 overflow-y-auto">
       {messages.map((message) => (
         <div
           key={message.id}
@@ -19,6 +34,8 @@ const ChatOutput = () => {
           </p>
         </div>
       ))}
+      {/* ✅ Invisible div at the bottom to scroll into view */}
+      <div ref={chatEndRef} />
     </div>
   );
 };
