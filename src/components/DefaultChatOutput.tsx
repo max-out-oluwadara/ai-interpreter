@@ -3,7 +3,7 @@ import IconInterpreterLogo from "@/assets/icon-intepreter-logo.svg"; // Import t
 
 const DefaultChatOutput = () => {
   return (
-    <div className="flex flex-col h-full min-h-[calc(100vh-64px)] justify-center items-center w-full p-4">
+    <div className="flex flex-col h-full min-h-0 justify-center items-center w-full p-4 overflow-y-auto">
       {/* Scaled-up icon - Ensures proper spacing */}
       <div className="flex justify-center w-full">
         <Image
