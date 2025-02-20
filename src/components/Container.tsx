@@ -3,7 +3,7 @@
 import Header from './Header';
 import Search from './Search';
 import ChatOutput from './ChatOutput';
-import DefaultChatOutput from './DefaultChatOutput';
+//import DefaultChatOutput from './DefaultChatOutput';
 
 const Container = () => {
   // ✅ Hardcoded to `true` or `false`
