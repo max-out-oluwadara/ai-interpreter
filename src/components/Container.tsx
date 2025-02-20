@@ -1,17 +1,17 @@
 import Header from './Header';
 import Search from './Search';
 import ChatOutput from './ChatOutput'; // Import ChatOutput component
-//import DefaultChatOutput from './DefaultChatOutput'; 
 
 const Container = () => {
   return (
     <div
       className="
+        relative /* Ensure header stays inside */
         bg-[#EEEEEE]
         w-full
         max-w-full
         h-screen
-        p-[16px]
+        p-[16px] pt-[60px] /* Prevent overlap between header and content */
         flex
         flex-col
         sm:p-[16px]
@@ -32,7 +32,6 @@ const Container = () => {
       {/* Chat Output Wrapper */}
       <div className="h-0 flex-grow overflow-hidden">
         <ChatOutput />
-        {/* <DefaultChatOutput />  */}
       </div>
 
       {/* Bottom div - stays in position */}
