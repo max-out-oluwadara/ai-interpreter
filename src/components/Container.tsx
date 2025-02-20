@@ -7,7 +7,7 @@ import DefaultChatOutput from './DefaultChatOutput';
 
 const Container = () => {
   // ✅ Hardcoded to `true` or `false`
-  const hasMessages = false; // Change this to `false` to see DefaultChatOutput
+  const hasMessages = true; // Change this to `false` to see DefaultChatOutput
 
   return (
     <div
@@ -35,7 +35,7 @@ const Container = () => {
       <Header />
 
       {/* Chat Output Wrapper */}
-      <div className="h-0 flex min-h-0 flex-grow overflow-y-auto pb-2">
+      <div className="h-0 flex-grow overflow-y-auto pb-2">
         {/* ✅ Show ChatOutput if `hasMessages` is true, otherwise show DefaultChatOutput */}
         {hasMessages ? <ChatOutput /> : <DefaultChatOutput />}
       </div>
