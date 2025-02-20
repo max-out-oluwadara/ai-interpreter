@@ -7,7 +7,7 @@ import ChatOutput from './ChatOutput';
 
 const Container = () => {
   // ✅ Hardcoded to `true` or `false`
- const hasMessages = true; // Change this to `false` to see DefaultChatOutput
+ //const hasMessages = true; // Change this to `false` to see DefaultChatOutput
 
   return (
     <div
