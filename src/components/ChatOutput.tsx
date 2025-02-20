@@ -11,7 +11,8 @@ const ChatOutput = () => {
           <p
             className={`
               ${message.sender === "user" ? "bg-[#D1E7FF]" : "bg-[#F5F5F5]"}
-              p-3 rounded-lg text-black max-w-xs
+              p-2 sm:p-3 rounded-lg text-black max-w-xs 
+              text-sm sm:text-base /* Reduce font size on sm screens */
             `}
           >
             {message.text}

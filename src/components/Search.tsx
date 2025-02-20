@@ -5,9 +5,9 @@ import IconDropDown from '@/assets/icon-dropdown.svg';
 
 const Search = () => {
   return (
-    <div>
+    <div >
       {/* Bottom Input - now responsive */}
-      <div className="p-4">
+      <div className="p-2">
         <textarea
           autoFocus
           className="
