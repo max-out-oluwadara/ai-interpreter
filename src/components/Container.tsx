@@ -1,13 +1,8 @@
 import Header from './Header';
 import Search from './Search';
 import ChatOutput from './ChatOutput';
-import DefaultChatOutput from './DefaultChatOutput';
-import messages from "@/data/message"; // Import messages
 
 const Container = () => {
-  // Check if there are messages
-  const hasMessages = messages.length > 0;
-
   return (
     <div
       className="
@@ -35,7 +30,7 @@ const Container = () => {
 
       {/* Chat Output Wrapper */}
       <div className="h-0 flex-grow overflow-hidden">
-        {hasMessages ? <ChatOutput /> : <DefaultChatOutput />}
+        <ChatOutput />
       </div>
 
       {/* Bottom div - adjusted for mobile */}
@@ -47,7 +42,7 @@ const Container = () => {
           rounded-[20px]
           sm:w-full
           max-w-full
-          mb-[25px]
+          mb-[20px]
           sm:mb-0
         "
       >
