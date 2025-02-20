@@ -1,6 +1,7 @@
 import Header from './Header';
 import Search from './Search';
-import ChatOutput from './ChatOutput';
+//import ChatOutput from './ChatOutput';
+import DefaultChatOutput from './DefaultChatOutput';
 
 const Container = () => {
   return (
@@ -29,10 +30,11 @@ const Container = () => {
       <Header />
 
       {/* Chat Output Wrapper */}
-      <div className="h-0 flex-grow overflow-y-auto">
-        <ChatOutput />
+      <div className="h-0 flex-grow overflow-y-auto pb-2">
+        {/* <ChatOutput /> */}
+        <DefaultChatOutput />
       </div>
-
+        
       {/* Bottom div - adjusted for mobile */}
       <div
         className="
@@ -42,7 +44,6 @@ const Container = () => {
           rounded-[20px]
           sm:w-full
           max-w-full
-          mb-[20px]
           sm:mb-0
         "
       >
