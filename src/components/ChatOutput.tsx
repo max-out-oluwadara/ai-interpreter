@@ -1,26 +1,29 @@
-"use client"; // ✅ Required for hooks
+"use client"; // ✅ Ensure this runs as a Client Component
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import messages from "@/data/message"; // Import messages
 
 const ChatOutput = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [loaded, setLoaded] = useState(false); // ✅ Track when the component is fully mounted
 
-  // ✅ Auto-scroll to bottom when chat loads (iPhone-safe)
+  // ✅ Ensure scrolling works properly on iPhone Safari
   useEffect(() => {
-    if (chatContainerRef.current) {
-      requestAnimationFrame(() => {
-        chatContainerRef.current!.scrollTop = chatContainerRef.current!.scrollHeight;
-      });
-    }
-  }, []); // ✅ No `messages.length` dependency (Fixes ESLint Warning)
+    setLoaded(true); // ✅ Set loaded to true after the first render
+
+    setTimeout(() => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
+    }, 200); // ✅ Delay ensures iPhone Safari renders messages before scrolling
+  }, []);
 
   return (
     <div
       ref={chatContainerRef}
       className="h-full space-y-3 p-4 overflow-y-auto"
     >
-      {messages.length > 0 ? (
+      {loaded && messages.length > 0 ? (
         messages.map((message) => (
           <div
             key={message.id}
