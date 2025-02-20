@@ -1,10 +1,20 @@
 "use client"; // ✅ Required for hooks
 
+import { useEffect, useRef } from "react";
 import messages from "@/data/message"; // Import messages
 
 const ChatOutput = () => {
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // ✅ Auto-scroll to bottom using `scrollTop` (iPhone-safe)
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, []); // ✅ Runs only once after component mounts
+
   return (
-    <div className="h-full space-y-3 p-4">
+    <div ref={chatContainerRef} className="h-full space-y-3 p-4 overflow-y-auto">
       {messages.map((message) => (
         <div
           key={message.id}
