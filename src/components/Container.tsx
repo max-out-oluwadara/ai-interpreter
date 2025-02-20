@@ -35,7 +35,7 @@ const Container = () => {
       <Header />
 
       {/* Chat Output Wrapper */}
-      <div className="h-0 flex-grow">
+      <div className="h-0 flex-grow overflow-y-auto">
         {/* ✅ Show ChatOutput if `hasMessages` is true, otherwise show DefaultChatOutput */}
         {/* {hasMessages ? <ChatOutput /> : <DefaultChatOutput />} */}
         <DefaultChatOutput />
