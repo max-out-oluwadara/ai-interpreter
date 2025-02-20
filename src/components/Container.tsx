@@ -10,7 +10,7 @@ const Container = () => {
         bg-[#EEEEEE]
         w-full
         max-w-full
-        min-h-screen
+        h-screen
         p-[16px]
         flex
         flex-col
