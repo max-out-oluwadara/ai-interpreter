@@ -1,9 +1,25 @@
 import Image from "next/image";
 import IconInterpreterLogo from "@/assets/icon-intepreter-logo.svg"; // Import the new SVG icon
+import { useState, useEffect, useRef } from "react";
 
 const DefaultChatOutput = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isScrollable, setIsScrollable] = useState(false);
+
+  // Check if the content overflows & update state
+  useEffect(() => {
+    if (containerRef.current) {
+      setIsScrollable(containerRef.current.scrollHeight > containerRef.current.clientHeight);
+    }
+  }, []);
+
   return (
-    <div className="flex flex-col h-full min-h-[calc(100vh-64px)] justify-center items-center w-full p-4">
+    <div 
+      ref={containerRef} 
+      className={`flex flex-col h-full min-h-[calc(100vh-64px)] justify-center items-center w-full p-4 ${
+        isScrollable ? "overflow-y-auto" : "overflow-y-hidden"
+      }`}
+    >
       {/* Scaled-up icon - Ensures proper spacing */}
       <div className="flex justify-center w-full">
         <Image
