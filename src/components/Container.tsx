@@ -35,7 +35,7 @@ const Container = () => {
 
       {/* Chat Output Wrapper */}
       <div className="h-0 flex-grow overflow-hidden">
-        {hasMessages ? <DefaultChatOutput /> : <ChatOutput />}
+        {hasMessages ? <ChatOutput /> : <DefaultChatOutput />}
       </div>
 
       {/* Bottom div - adjusted for mobile */}
