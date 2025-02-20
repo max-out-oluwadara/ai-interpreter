@@ -3,7 +3,7 @@
 import Header from './Header';
 import Search from './Search';
 import ChatOutput from './ChatOutput';
-import DefaultChatOutput from './DefaultChatOutput';
+//import DefaultChatOutput from './DefaultChatOutput';
 
 const Container = () => {
   // ✅ Hardcoded to `true` or `false`
@@ -37,7 +37,8 @@ const Container = () => {
       {/* Chat Output Wrapper */}
       <div className="h-0 flex-grow overflow-y-auto">
         {/* ✅ Show ChatOutput if `hasMessages` is true, otherwise show DefaultChatOutput */}
-        {hasMessages ? <ChatOutput /> : <DefaultChatOutput />}
+        {/* {hasMessages ? <ChatOutput /> : <DefaultChatOutput />} */}
+        <ChatOutput /> 
       </div>
         
       {/* Bottom div - adjusted for mobile */}
