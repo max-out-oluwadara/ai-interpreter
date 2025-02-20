@@ -7,12 +7,12 @@ const ChatOutput = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // ✅ Ensure scrolling works properly on iPhone
+  // ✅ Ensure scrolling works correctly on iPhone
   useEffect(() => {
     if (chatContainerRef.current && chatEndRef.current) {
-      setTimeout(() => {
-        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 100); // Small delay to ensure proper rendering
+      requestAnimationFrame(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: "instant" });
+      });
     }
   }, []); // ✅ Runs only once after component mounts
 
