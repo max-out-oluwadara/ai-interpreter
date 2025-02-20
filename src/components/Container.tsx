@@ -2,8 +2,8 @@
 
 import Header from './Header';
 import Search from './Search';
-import ChatOutput from './ChatOutput';
-//import DefaultChatOutput from './DefaultChatOutput';
+//import ChatOutput from './ChatOutput';
+import DefaultChatOutput from './DefaultChatOutput';
 
 const Container = () => {
   // ✅ Hardcoded to `true` or `false`
@@ -38,7 +38,7 @@ const Container = () => {
       <div className="h-0 flex-grow overflow-y-auto">
         {/* ✅ Show ChatOutput if `hasMessages` is true, otherwise show DefaultChatOutput */}
         {/* {hasMessages ? <ChatOutput /> : <DefaultChatOutput />} */}
-        <ChatOutput />
+        <DefaultChatOutput />
       </div>
         
       {/* Bottom div - adjusted for mobile */}
