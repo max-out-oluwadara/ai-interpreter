@@ -2,7 +2,7 @@ import messages from "@/data/message"; // Import messages
 
 const ChatOutput = () => {
   return (
-    <div className="h-full overflow-y-auto space-y-3 p-2">
+    <div className="h-full  space-y-3 p-2">
       {messages.map((message) => (
         <div
           key={message.id}
