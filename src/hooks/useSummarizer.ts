@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useEffect } from "react";
+import { useAppContext } from "@/context/AppContext";
 
 export const useSummarizer = () => {
-  const [text, setText] = useState(""); // Stores input text
-  const [result, setResult] = useState(""); // Stores summarized output
-  const [mode, setMode] = useState<"translate" | "summarize">("summarize"); // ✅ Mode for summarization
-  const [loading, setLoading] = useState(false); // Loading state
-  const [isSupported, setIsSupported] = useState(false); // API support check
-  const [summarizer, setSummarizer] = useState<SummarizerInstance | null>(null); // Summarizer instance
+  const { state, dispatch } = useAppContext();
+  const { text } = state;
 
   useEffect(() => {
     const initSummarizer = async () => {
@@ -16,22 +15,19 @@ export const useSummarizer = () => {
         return;
       }
 
-      setIsSupported(true);
       try {
         const capabilities = await summarizerAPI.capabilities();
         console.log("Summarizer capabilities:", capabilities);
 
         if (capabilities.available === "readily") {
           console.log("✅ Summarizer API is ready.");
-          const summarizerInstance = await summarizerAPI.create({
+          await summarizerAPI.create({
             type: "key-points",
             format: "plain-text",
             length: "medium",
           });
-          setSummarizer(summarizerInstance);
         } else if (capabilities.available === "after-download") {
           console.log("⏳ Model is downloading...");
-
           const checkDownloadProgress = async () => {
             let available = "after-download";
             while (available === "after-download") {
@@ -39,17 +35,13 @@ export const useSummarizer = () => {
               available = (await summarizerAPI.capabilities()).available;
               console.log(`⏳ Download status: ${available}`);
             }
-
             console.log("✅ Model is ready!");
-            const summarizerInstance = await summarizerAPI.create({
+            await summarizerAPI.create({
               type: "key-points",
               format: "plain-text",
               length: "medium",
             });
-
-            setSummarizer(summarizerInstance);
           };
-
           checkDownloadProgress();
         } else {
           console.warn("❌ Summarizer API is not available.");
@@ -62,36 +54,37 @@ export const useSummarizer = () => {
     initSummarizer();
   }, []);
 
-  const handleSummarize = async () => {
-    if (!isSupported) {
+  const handleSummarize = async (): Promise<string> => {
+    if (!window.ai?.summarizer) {
       alert("Summarizer API is not available in this browser.");
-      return;
+      return "";
     }
-    if (!summarizer) {
-      alert("Summarizer model is still loading. Please wait.");
-      return;
-    }
-    setLoading(true);
+
+    dispatch({ type: "SET_LOADING", payload: true });
+
     try {
-      const summary = await summarizer.summarize(text, {
+      const summarizerAPI = window.ai.summarizer;
+      const summarizerInstance = await summarizerAPI.create({
+        type: "key-points",
+        format: "plain-text",
+        length: "medium",
+      });
+
+      const summarizedText = await summarizerInstance.summarize(text, {
         context: "This text is meant to be summarized for clarity.",
       });
-      setResult(summary);
+
+      dispatch({ type: "SET_SUMMARY", payload: summarizedText });
+
+      return summarizedText; // ✅ Only returns summary, no dispatch of AI messages
     } catch (error) {
       console.error("❌ Error summarizing text:", error);
       alert("Failed to summarize text.");
+      return "";
     } finally {
-      setLoading(false);
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 
-  return {
-    text,
-    setText,
-    result,
-    mode, // ✅ Now returned
-    setMode, // ✅ Now returned
-    loading,
-    handleSummarize,
-  };
+  return { handleSummarize };
 };

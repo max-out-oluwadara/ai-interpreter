@@ -1,13 +1,14 @@
 "use client"; // ✅ Ensure this is a Client Component
 
-import Header from './Header';
-import Search from './Search';
-import ChatOutput from './ChatOutput';
-//import DefaultChatOutput from './DefaultChatOutput';
+import { useAppContext } from "@/context/AppContext"; // ✅ Import Context
+import Header from "./Header";
+import Search from "./Search";
+import ChatOutput from "./ChatOutput";
+import DefaultChatOutput from "./DefaultChatOutput"; // ✅ Import Default Chat Output
 
 const Container = () => {
-  // ✅ Hardcoded to `true` or `false`
- //const hasMessages = true; // Change this to `false` to see DefaultChatOutput
+  const { state } = useAppContext();
+  const hasMessages = state.messages.length > 0; // ✅ Check if messages exist
 
   return (
     <div
@@ -36,9 +37,8 @@ const Container = () => {
 
       {/* Chat Output Wrapper */}
       <div className="h-0 flex-grow overflow-y-auto">
-        {/* ✅ Show ChatOutput if `hasMessages` is true, otherwise show DefaultChatOutput */}
-        {/* {hasMessages ? <ChatOutput /> : <DefaultChatOutput />} */}
-        <ChatOutput /> 
+        {/* ✅ Dynamically show ChatOutput if messages exist, otherwise DefaultChatOutput */}
+        {hasMessages ? <ChatOutput /> : <DefaultChatOutput />}
       </div>
         
       {/* Bottom div - adjusted for mobile */}

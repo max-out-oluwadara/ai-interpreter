@@ -1,47 +1,49 @@
-import { useState, useEffect, useCallback } from "react";
+"use client";
+
+import { useEffect, useCallback } from "react";
+import { useAppContext } from "@/context/AppContext"; // ✅ Use Global Context
+import { DetectedLanguage } from "@/context/appReducer"; // ✅ Import correct type
+
+// ✅ Define API Response Type (Ensure it matches DetectedLanguage)
+interface LanguageDetectionResult {
+  language: string;
+  confidence: number;
+  probability?: number; // ✅ Optional field
+}
 
 export const useLanguageDetection = () => {
-  const [text, setText] = useState(""); // Input text
-  const [detectedLanguages, setDetectedLanguages] = useState<DetectedLanguage[]>([]); // Detected languages
-  const [detector, setDetector] = useState<LanguageDetectorInstance | null>(null); // Detector instance
-  const [loading, setLoading] = useState(false); // Loading state
-  const [isSupported, setIsSupported] = useState(false); // API support check
+  const { state, dispatch } = useAppContext();
+  const { text } = state; // ✅ Get text from global state
 
-  // ✅ Initialize Language Detector API on Mount
   useEffect(() => {
     const initLanguageDetector = async () => {
       const detectorAPI = window.ai?.languageDetector;
       if (!detectorAPI) {
-        console.warn("❌ Language Detector API is not available in this browser.");
+        console.warn("❌ Language Detector API is not available.");
         return;
       }
 
-      setIsSupported(true);
       try {
         const capabilities = await detectorAPI.capabilities();
         console.log("🔍 Language Detector capabilities:", capabilities);
 
         if (capabilities.available === "readily") {
-          console.log("✅ Language Detector API is ready to use.");
-          const detectorInstance = await detectorAPI.create();
-          setDetector(detectorInstance);
+          console.log("✅ Language Detector API is ready.");
+          dispatch({ type: "SET_DETECTED_LANGUAGES", payload: [] }); // ✅ Ensure payload is an empty array initially
         } else if (capabilities.available === "after-download") {
           console.log("⏳ Language model downloading...");
 
           const checkDownloadProgress = async () => {
             let availability: "no" | "readily" | "after-download" = "after-download";
             while (availability === "after-download") {
-              await new Promise((res) => setTimeout(res, 2000)); // Wait 2s
+              await new Promise((res) => setTimeout(res, 2000));
               availability = (await detectorAPI.capabilities()).available;
               console.log(`⏳ Download progress: ${availability}`);
             }
-
             console.log("✅ Model is now ready!");
-            const detectorInstance = await detectorAPI.create();
-            setDetector(detectorInstance);
           };
 
-          checkDownloadProgress(); // Start polling
+          checkDownloadProgress();
         } else {
           console.warn("❌ Language Detector API is not available.");
         }
@@ -51,37 +53,40 @@ export const useLanguageDetection = () => {
     };
 
     initLanguageDetector();
-  }, []);
+  }, [dispatch]); // ✅ Fix: Added dispatch to dependencies
 
   // ✅ Function to Detect Language
   const handleDetectLanguage = useCallback(async () => {
-    if (!isSupported) {
-      alert("Language Detector API is not available in this browser.");
+    if (!window.ai?.languageDetector) {
+      alert("Language Detector API is not available.");
       return;
     }
 
-    if (!detector) {
-      alert("Language Detector model is still loading. Please wait.");
-      return;
-    }
+    dispatch({ type: "SET_LOADING", payload: true });
 
-    setLoading(true);
     try {
-      const results = await detector.detect(text);
-      setDetectedLanguages(results);
+      const detector = await window.ai.languageDetector.create();
+      const rawResults = await detector.detect(text);
+
+      console.log("🔍 Raw detected languages:", rawResults); // ✅ Debugging log
+
+      // ✅ Ensure results conform to DetectedLanguage[]
+      const formattedResults: DetectedLanguage[] = (rawResults as unknown as LanguageDetectionResult[]).map(
+        (res) => ({
+          language: res.language, // ✅ Ensure 'language' field is included
+          confidence: res.confidence,
+          probability: res.probability ?? 0, // ✅ Provide default value if missing
+        })
+      );
+
+      dispatch({ type: "SET_DETECTED_LANGUAGES", payload: formattedResults }); // ✅ Fixed payload type
     } catch (error) {
       console.error("❌ Error detecting language:", error);
       alert("Failed to detect language.");
     } finally {
-      setLoading(false);
+      dispatch({ type: "SET_LOADING", payload: false });
     }
-  }, [detector, text, isSupported]);
+  }, [text, dispatch]); // ✅ Fix: Added dispatch as dependency
 
-  return {
-    text,
-    setText,
-    detectedLanguages,
-    loading,
-    handleDetectLanguage,
-  };
+  return { handleDetectLanguage };
 };

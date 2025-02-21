@@ -1,8 +1,11 @@
 "use client"; // ✅ Required for hooks
 
-import messages from "@/data/message"; // Import messages
+import { useAppContext } from "@/context/AppContext"; // ✅ Import Context
 
 const ChatOutput = () => {
+  const { state } = useAppContext();
+  const { messages } = state;
+
   return (
     <div className="h-full space-y-3 p-4">
       {messages.map((message) => (
@@ -21,7 +24,7 @@ const ChatOutput = () => {
           </p>
         </div>
       ))}
-    </div>
+    </div> 
   );
 };
 
